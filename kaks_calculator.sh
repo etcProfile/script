@@ -1,4 +1,4 @@
-```bash
+
 #!/bin/bash
 
 # This script was written by Luo Shaofan on May 12, 2022.
@@ -16,4 +16,4 @@ do
     # Extract the relevant information from the output file and save it to ${dir}.result.list
     cat ${dir}.result | cut -f 1,2,3,4,5,6 | grep -v 'Sequence' | less -S  > ${dir}.result.list
 done
-```
+
