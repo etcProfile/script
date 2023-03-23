@@ -1,0 +1,5 @@
+python -m jcvi.formats.gff bed --type=mRNA --key=ID Dendrobium_catenatum_genomic.gff -o Dendrobium_catenatum_genomic.bed
+python -m jcvi.compara.catalog ortholog --dbtype prot --cscore .4 --no_strip_names DEW_genomic Phalaenopsis_aphrodite_genomic
+#python -m jcvi.compara.synteny mcscan DEW_genomic.bed DEW_genomic.Phalaenopsis_aphrodite_genomic.anchors --iter=1 -o DEW_vs_Pap.i1.blocks
+python -m jcvi.compara.synteny screen --minspan=0 --simple DEW_genomic.Phalaenopsis_aphrodite_genomic.anchors DEW_genomic.Phalaenopsis_aphrodite_genomic.anchors.new
+python -m jcvi.graphics.synteny FMO_block DEW_vs_Pqp.bed blocks.layout
