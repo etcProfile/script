@@ -1,5 +1,24 @@
 python -m jcvi.formats.gff bed --type=mRNA --key=ID Dendrobium_catenatum_genomic.gff -o Dendrobium_catenatum_genomic.bed
 python -m jcvi.compara.catalog ortholog --dbtype prot --cscore .4 --no_strip_names DEW_genomic Phalaenopsis_aphrodite_genomic
 #python -m jcvi.compara.synteny mcscan DEW_genomic.bed DEW_genomic.Phalaenopsis_aphrodite_genomic.anchors --iter=1 -o DEW_vs_Pap.i1.blocks
-python -m jcvi.compara.synteny screen --minspan=0 --simple DEW_genomic.Phalaenopsis_aphrodite_genomic.anchors DEW_genomic.Phalaenopsis_aphrodite_genomic.anchors.new
+python -m jcvi.compara.synteny screen --minspan=10 --simple DEW_genomic.Phalaenopsis_aphrodite_genomic.anchors DEW_genomic.Phalaenopsis_aphrodite_genomic.anchors.new
+python -m jcvi.graphics.karyotype seqid layout --figsize 13x10 --dpi=900 --chrstyle rect
+
 python -m jcvi.graphics.synteny FMO_block DEW_vs_Pqp.bed blocks.layout
+
+
+# y, xstart, xend, rotation, color, label, va,  bed
+ .7,     0.025,    0.625,      60,      , Pap, top, Phalaenopsis_aphrodite_genomic.bed
+ .3,     0.2,    .8,       0,      , DEW, top, DEW_genomic.bed
+ .7,     0.375,    0.975,      -60,      , Dca, top, Dendrobium_catenatum_genomic.bed
+ .1,     0.2,    .8,       0,      , Ash, top, Apostasia_shenzhenica_genomic.bed
+# edges
+e, 0, 1, DEW.Paq.anchors.simple
+e, 1, 2, DEW_genomic.Dendrobium_catenatum_genomic.anchors.simple
+e, 1, 3, DEW_genomic.Apostasia_shenzhenica_genomic.anchors.simple
+
+
+scaffold1,scaffold2,scaffold3,scaffold4,scaffold5,scaffold6,scaffold7,scaffold8,scaffold9,scaffold10,scaffold11,scaffold12,scaffold13,scaffold14,scaffold15,scaffold16,scaffold17,scaffold18,scaffold19,scaffold20,scaffold21,scaffold22,scaffold23,scaffold24
+HiC_scaffold_1,HiC_scaffold_2,HiC_scaffold_3,HiC_scaffold_4,HiC_scaffold_5,HiC_scaffold_6,HiC_scaffold_7,HiC_scaffold_8,HiC_scaffold_9,HiC_scaffold_10,HiC_scaffold_11,HiC_scaffold_12,HiC_scaffold_13,HiC_scaffold_14,HiC_scaffold_15,HiC_scaffold_16,HiC_scaffold_17,HiC_scaffold_18,HiC_scaffold_19,HiC_scaffold_20,HiC_scaffold_21,HiC_scaffold_24
+chr1,chr2,chr3,chr4,chr5,chr6,chr7,chr8,chr9,chr10,chr11,chr12,chr13,chr14,chr15,chr16,chr17,chr18,chr19,chr20
+chr1,chr2,chr3,chr4,chr5,chr6,chr7,chr8,chr9,chr10,chr11,chr12,chr13,chr14,chr15,chr16,chr17,chr18,chr19,chr20
