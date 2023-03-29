@@ -1,0 +1,8 @@
+ggplot(data_log, aes(x = group, y = e)) +
+geom_violin(fill = "lightblue") +
+geom_boxplot(width = 0.1) +
+theme_bw()
+
+tip$group <- factor(tip$group,levels = c("1.5cm_tip","4cm_tip","6cm_tip","9.5cm_tip","12cm_tip","mature_tip"))
+base$group <- factor(base$group,levels = c("1.5cm_Middle","4cm_Middle","6cm_Middle","9.5cm_Middle","12cm_Middle","mature_Middle"))
+middle$group <- factor(middle$group,levels = c("1.5cm_Middle","4cm_Middle","6cm_Middle","9.5cm_Middle","12cm_Middle","mature_Middle"))
