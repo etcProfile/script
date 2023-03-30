@@ -1,0 +1,5 @@
+ls *tip_*| cut -f 1,2 -d "_" | sort -u | while read id; do awk -F "," -v var="${id}" '{print $0","^Cr}' ${id}*.csv; done > all_tip.csv
+
+awk '{print $0, $1/$2}' data.txt > data_with_ratio.txt
+awk '{ sum += $3; n++ } END { if (n > 0) print sum / n; }' data_with_ratio.txt
+
