@@ -3,3 +3,4 @@ ls *tip_*| cut -f 1,2 -d "_" | sort -u | while read id; do awk -F "," -v var="${
 awk '{print $0, $1/$2}' data.txt > data_with_ratio.txt
 awk '{ sum += $3; n++ } END { if (n > 0) print sum / n; }' data_with_ratio.txt
 
+awk '{if(max==""){max=$1};if(max<$1) max=$1}END{print max}' file.txt
