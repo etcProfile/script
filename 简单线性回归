@@ -1,0 +1,24 @@
+# 拟合简单线性回归模型
+lm <- lm(wt ~ mpg, data = mtcars)
+
+# 利用模型求出给定x，y的拟合值，以及拟合值的置信区间
+new_mpg <- seq(min(mtcars$mpg), max(mtcars$mpg), 0.01)
+pred_wt <- data.frame(predict(lm, newdata = data.frame(mpg = new_mpg),
+                                 interval = "confidence"), 
+                      new_mpg = new_mpg)
+print(head(pred_wt))
+#        fit      lwr      upr new_mpg
+# 1 4.582291 4.240349 4.924232   10.40
+# 2 4.580882 4.239197 4.922566   10.41
+# 3 4.579473 4.238045 4.920901   10.42
+# 4 4.578065 4.236893 4.919236   10.43
+# 5 4.576656 4.235741 4.917571   10.44
+# 6 4.575247 4.234589 4.915906   10.45
+
+# 利用geom_line绘制回归线，利用geom_ribbon绘制置信区间阴影
+p + 
+  geom_line(data = pred_wt, mapping = aes(x = new_mpg, y = fit), 
+            color = "red", size = 1, alpha = 0.5) +
+  geom_ribbon(data = pred_wt, mapping = aes(x = new_mpg, 
+                                            ymin = lwr, ymax = upr), 
+              fill = "grey", alpha = 0.5)
