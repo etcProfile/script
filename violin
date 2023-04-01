@@ -6,3 +6,10 @@ theme_bw()
 tip$group <- factor(tip$group,levels = c("1.5cm_tip","4cm_tip","6cm_tip","9.5cm_tip","12cm_tip","mature_tip"))
 base$group <- factor(base$group,levels = c("1.5cm_Middle","4cm_Middle","6cm_Middle","9.5cm_Middle","12cm_Middle","mature_Middle"))
 middle$group <- factor(middle$group,levels = c("1.5cm_Middle","4cm_Middle","6cm_Middle","9.5cm_Middle","12cm_Middle","mature_Middle"))
+
+
+data_mean <- data %>% group_by(group1, group2) %>% summarise(mean_e = mean(e), sd_e = sd(e))
+
+area_mean$group2 <- factor(area_mean$group2,levels = c("1.5cm","4cm","6cm","9.5cm","12cm","mature"))
+
+ggplot(area_mean,aes(x=group1,y=mean_e,fill=group2))+geom_bar(stat="identity",position = 'dodge',width = 0.75)+scale_fill_brewer(name="Spur length",palette = "Greys")+geom_errorbar(aes(ymin = mean_e - sd_e, ymax = mean_e + sd_e), position = position_dodge(0.75),width=0.3)+theme_bw()+xlab("Spur of Area")+ylab("Cell Area")
