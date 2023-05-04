@@ -1,7 +1,7 @@
 data_scale <- as.data.frame(t(apply(data,1,scale)))
 colnames(data_scale) <- colnames(data) 
 fviz_nbclust(data_scale,kmeans,method="wss") #判断kmeans值
-pam(pearson,k=3,stand=TRUE) -> kp
-final_data <- cbind(df, cluster = kp$clustering)
+pam(data_scale,k=3,stand=TRUE) -> kp
+final_data <- cbind(data_scale, cluster = kp$clustering)
 write.table(final_data,file = "test_cluster.txt",sep = "\t",quote = FALSE)
 
