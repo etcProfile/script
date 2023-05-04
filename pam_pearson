@@ -1,8 +1,5 @@
-df <- scale(df)
-fviz_nbclust(df,kmeans,method="wss") #判断kmeans值
-distanceMatrix(t_df,'pearson') -> pearson #计算pearson相关性
-pam(pearson,k=3,diss=inherits(person,"dissimilarity")) #pam 聚类
-
-
-pam(pearson,k=3,stand=TRUE)
+data_scale <- as.data.frame(t(apply(data,1,scale))) # 重命名列 
+colnames(data_scale) <- colnames(data) 
+fviz_nbclust(data_scale,kmeans,method="wss") #判断kmeans值
+pam(pearson,k=3,stand=TRUE) -> kp
 final_data <- cbind(df, cluster = kp$clustering)
