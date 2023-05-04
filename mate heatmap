@@ -1,0 +1,1 @@
+Heatmap(as.matrix((scale_data)),na_col="white",cluster_rows = F,rect_gp=gpar(col="black",lwd=0.5))
