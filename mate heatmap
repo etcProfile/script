@@ -1,1 +1,3 @@
 Heatmap(as.matrix((scale_data)),na_col="white",cluster_rows = F,rect_gp=gpar(col="black",lwd=0.5))
+
+Heatmap(t_hours_heatmap,name="Z-scale",na_col="white",cluster_rows = F,column_km=3,column_gap=unit(0,"mm"),border=TRUE,rect_gp=gpar(col="black",lwd=0.3),column_names_rot = 45,row_names_side = "left",column_names_gp=gpar(fontsize=8),row_names_gp = gpar(fontsize=8),cell_fun = function(j,i,x,y,width,height,fill){grid.text(sprintf("%.1f",t_hours_heatmap[i,j]),x,y,gp=gpar(col="black",fontsize=7,transparency = 0.1))})
