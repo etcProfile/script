@@ -17,6 +17,10 @@ cat Aedg.cds.fa Aeve.cds.fa Ljap.cds.fa Pvul.cds.fa Smar_cds.fa Tpra.cds.fa >> a
 )\.p//g' -i ${id}.list; seqkit grep -f ${id}.list > ${id}_cds.fa; done
 #change seqeuence header, same as the species name
 sed '/^>/s/Aedg.*/Adg/; /^>/s/Ae.*/Aeve/; /^>/s/Lj.*/Ljap/; /^>/s/Tp.*/Tpra/; /^>/s/EVM.*/Smar/; /^>/s/Pv5.*/Pvul/; /^>/s/Adg.*/Aedg/' ${id}_cds.fa > ${id}_cds_clean.fa
+#
+perl -pe '$. > 1 and /^>/ ? print "\n" : chomp' ${gene}.fasta > ${gene}.tmp.fasta
+#
+sed -e "s/TGA$//" -e "s/TAA$//" -e "s/TAG$//" ${gene}.tmp.fasta > ${id}_${gene}_no_stop_codon.fasta
 #Translate nucleic acid sequences to aa sequneces
-trans 
 
+transeq -sequence ${id}_${gene}_no_stop_codon.fasta -outseq ${id}_${gene}_protein.fasta
