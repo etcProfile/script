@@ -18,9 +18,23 @@ cat Aedg.cds.fa Aeve.cds.fa Ljap.cds.fa Pvul.cds.fa Smar_cds.fa Tpra.cds.fa >> a
 #change seqeuence header, same as the species name
 sed '/^>/s/Aedg.*/Adg/; /^>/s/Ae.*/Aeve/; /^>/s/Lj.*/Ljap/; /^>/s/Tp.*/Tpra/; /^>/s/EVM.*/Smar/; /^>/s/Pv5.*/Pvul/; /^>/s/Adg.*/Aedg/' ${id}_cds.fa > ${id}_cds_clean.fa
 #
-perl -pe '$. > 1 and /^>/ ? print "\n" : chomp' ${gene}.fasta > ${gene}.tmp.fasta
+perl -pe '$. > 1 and /^>/ ? print "\n" : chomp' ${id}_cds_clean.fa > ${id}_cds.tmp.fa
 #
-sed -e "s/TGA$//" -e "s/TAA$//" -e "s/TAG$//" ${gene}.tmp.fasta > ${id}_${gene}_no_stop_codon.fasta
+sed -e "s/TGA$//" -e "s/TAA$//" -e "s/TAG$//" ${id}_cds.tmp.fa > ${id}_no_stop_codon.fa
 #Translate nucleic acid sequences to aa sequneces
-
-transeq -sequence ${id}_${gene}_no_stop_codon.fasta -outseq ${id}_${gene}_protein.fasta
+transeq - -sequence ${id}_no_stop_codon.fa -outseq ${id}_protein.fa
+mafft --quiet --localpair --maxiterate 1000 --thread 40 ${id}_protein.fa >  ${id}_protein.aln.fa
+pal2nal.pl ${id}_protein.aln.fa ${id}_no_stop_codon.fa -nogap -codontable 11 -output paml > cds.pal2nal
+#find the wrong og 
+for dir in  ~/data/selection_analysis/PSGanalysis/single_copy/*; do
+    if [ -d "$dir" ]; then
+        if [ -e "$dir/cds.pal2nal" ]; then
+            if [ ! -s "$dir/cds.pal2nal" ]; then
+                echo "$dir"
+            fi
+        fi
+    fi
+done
+#
+mkdir alrt_model null_model 
+# make 
