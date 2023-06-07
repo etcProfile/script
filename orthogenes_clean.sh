@@ -34,7 +34,19 @@ for dir in  ~/data/selection_analysis/PSGanalysis/single_copy/*; do
             fi
         fi
     fi
-done
-#
+done | cut -d "/" -f 9 | sort | less
+#use branch site model in the paml 
 mkdir alrt_model null_model 
-# make 
+#creat codeml.ctl files (codeml.ctl and codeml_alrt.ctl)
+#creat tree files 
+ls | grep -v "script.sh" | grep -v "nohup.out" | while read id
+do
+        cd ~/data/selection_analysis/PSGanalysis/single_copy/${id}/alrt_model
+        codeml codeml_alrt.ctl
+        grep "lnL" mlc >> ./${id}_alrt_result.out
+        grep "foreground w" mlc >> ./${id}_alrt_result.out
+        cd ~/data/selection_analysis/PSGanalysis/single_copy/${id}/null_model
+        codeml codeml.ctl
+        grep "lnL" mlc >> ./${id}_null_result.out
+done
+
