@@ -42,11 +42,9 @@ mkdir alrt_model null_model
 ls | grep -v "script.sh" | grep -v "nohup.out" | while read id
 do
         cd ~/data/selection_analysis/PSGanalysis/single_copy/${id}/alrt_model
-        codeml codeml_alrt.ctl
-        grep "lnL" mlc >> ./${id}_alrt_result.out
-        grep "foreground w" mlc >> ./${id}_alrt_result.out
+        codeml codeml_alrt.ctl   
+         grep -E "lnL|foreground w" mlc  | awk '{print$5}' | sed 's/\\n/ /g' |  xargs echo -n ${id}
         cd ~/data/selection_analysis/PSGanalysis/single_copy/${id}/null_model
         codeml codeml.ctl
-        grep "lnL" mlc >> ./${id}_null_result.out
 done
 
