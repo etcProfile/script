@@ -43,8 +43,9 @@ ls | grep -v "script.sh" | grep -v "nohup.out" | while read id
 do
         cd ~/data/selection_analysis/PSGanalysis/single_copy/${id}/alrt_model
         codeml codeml_alrt.ctl   
-         grep -E "lnL|foreground w" mlc  | awk '{print$5}' | sed 's/\\n/ /g' |  xargs echo -n ${id}
+         grep -E "lnL|foreground w" mlc  | awk '{print$5}' | tr '\n' ' '  |  xargs echo -n ${id} >> ../${id}_result.out
         cd ~/data/selection_analysis/PSGanalysis/single_copy/${id}/null_model
+        grep -E  "lnL|foreground w" mlc | awk '{print$5}' | tr '\n' ' ' | xargs echo " " >> ../${id}_result.out
         codeml codeml.ctl
 done
 
