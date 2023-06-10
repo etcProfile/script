@@ -49,3 +49,7 @@ do
         codeml codeml.ctl
 done
 
+cat *${id}_result.out >> all_result.out
+awk '{print$0,$2-$4}' all_result.out | awk '{print$0,sqrt($6*$6)}' | awk '{$6=1;print$0}' | awk '{print$0,($7*2)}' >> all_result.tmp.out
+less all_result.tmp.out | awk '{print$6,$8}' | while read id; do chi2 ${id}; done | grep -v ^$ | awk '{print$6}' > chi2_result.out
+paste -d " " all_result.tmp.out chi2_result.out > final_paml.out
