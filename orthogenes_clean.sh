@@ -57,14 +57,14 @@ paste -d " " all_result.tmp.out chi2_result.out > final_paml.out
 ls | grep -v "sh" | grep -v "out" | while read id
 do
         cd ~/data/selection_analysis/PSGanalysis/single_copy/${id}/branch_model/M0_model
-        grep "lnL" mlc | awk  -F : '{print$4}' | awk '{print$1}' | tr '\n' ' '  | xargs echo -n ${id} >> ../${id}_branch_model_result.out
+        grep "lnL" mlc | awk  -F : '{print$4}' | awk '{print$1}' | xargs echo -n ${id} >> ../${id}_branch_model_result.out
         grep "omega" mlc | awk '{print$4}' | xargs echo -n  " " >> ../${id}_branch_model_result.out
         cd ~/data/selection_analysis/PSGanalysis/single_copy/${id}/branch_model/M2_model
-        grep "lnL" mlc | awk  -F : '{print$4}' | awk '{print$1}' | tr '\n' ' '  | xargs echo -n " " >> ../${id}_branch_model_result.out
+        grep "lnL" mlc | awk  -F : '{print$4}' | awk '{print$1}'  | xargs echo -n " " >> ../${id}_branch_model_result.out
         grep "(dN/dS)" mlc | awk '{print"w1="$5";""w2="$6}' | tr '\n' ' '  | xargs echo " " >> ../${id}_branch_model_result.out
 done
 cat *${id}_result.out >> all_result.out
-awk '{print$0,$2-$4}' all_result.out | awk '{print$0,sqrt($6*$6)}'  | awk '{print$0,($7*2)}' | awk '{$9=1;print$0}' >> all_result.tmp.out
+awk '{print$0,$2-$4}' all_branch_model_result.out | awk '{print$0,sqrt($6*$6)}'  | awk '{print$0,($7*2)}' | awk '{$9=1;print$0}' >> all_result.tmp.out
 less all_result.tmp.out | awk '{print$9,$8}' | while read id; do chi2 ${id}; done | grep -v ^$ | awk '{print$6}' > chi2_result.out
 paste -d " " all_result.tmp.out chi2_result.out > final_paml.out
         
