@@ -3,7 +3,7 @@
 # 声明变量
 database_file="database.fasta"
 #如果有从pfam下载的种子文件，则声明文件即可，如没有，则为空
-hmmsed="your.hmm file"
+hmmseed="your.hmm file"
 query_file="query.fasta"
 result_file="result.out"
 evalue=1e-5
