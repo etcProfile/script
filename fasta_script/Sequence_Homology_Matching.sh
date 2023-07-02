@@ -52,7 +52,15 @@ if [ "$union" = "T" ]; then
     cat blastp.out mmseqs.out diamond.out hmm.out | sort -u > $result_file.union
     less $query_file | seqkit grep -f $result_file.union > result_seq_union.fasta
 fi
-
+#标准化序列
+perl -pe '$. > 1 and /^>/ ? print "\n" : chomp' ${id}_cds.fa > ${id}_cds.tmp.fa
+#删除终止密码子
+sed -e "s/TGA$//" -e "s/TAA$//" -e "s/TAG$//" ${id}_cds.tmp.fa > ${id}_no_stop_codon.fa
+#核酸序列翻译为蛋白序列
+transeq -sequence ${id}_no_stop_codon.fa -outseq ${id}_protein.fa
+#去掉header里面冗余的部分，使得核酸和蛋白的序列header一样
+sed 's/_1//g' -i ${id}_protein.fa
+#用mafft来序列对齐
 # Perform a multiple sequence alignment of the protein sequences in the file ${dir}.pep.fasta using the MAFFT program
 mafft --maxiterate 1000 --thread 40 --localpair ${dir}.pep.fasta > all_${dir}_pep.aln.fasta
 # Convert the protein alignment to a codon alignment using the pal2nal.pl program
