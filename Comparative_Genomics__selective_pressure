@@ -1,0 +1,36 @@
+WORKDIR="pwd"
+ls *gff | cut -f 1 -d "." | while read id
+do
+gffread -g ${id}.fna -x ${id}_cds.fasta ${id}.gff
+transeq -sequence ${id}_cds.fasta -out ${id}_protein.fasta
+sed 's/_1//g' -i ${id}_protein.fasta
+done
+cat *cds.fasta >> all_speices_cds.fasta
+mkdir protein_file && cp *protein.fasta protein_file
+#protein_file="here is which path of your protein fasta file"
+#nucl_file="here is which path of your coding sequence nucl fasta file"
+#use Orthofinder to get all orthogroup id and sequences including single copy genes
+Orthofinder -f protein_file -n SP
+mkdir For_SP && cp -r ./OrthoFinder/Results_SP/Single_Copy_Orthologue_Sequences For_SP
+ls For_SP | cut -f 1 -d "." | while read gene
+do
+mkdir ${gene} && mv ${gene}.fa ${gene}
+cd WORKDIR/${gene}
+less ${gene}.fa | grep ">" | sed 's/>//g' > ${gene}.list
+less all_speices_cds.fasta | seqkit grep -f ${gene}.list > ${gene}_cds.fasta
+perl -pe '$. > 1 and /^>/ ? print "\n" : chomp' ${gene}_cds.fa > ${gene}_cds.tmp.fa
+sed -e "s/TGA$//" -e "s/TAA$//" -e "s/TAG$//" ${gene}_cds.tmp.fa > ${gene}_no_stop_codon.fa
+transeq -sequence ${id}_no_stop_codon.fa -outseq ${gene}_protein.fa
+mafft --quiet --localpair --maxiterate 1000 --thread 40 ${gene}_protein.fa > ${gene}_protein.aln.fa
+pal2nal.pl ${id}_protein.aln.fa ${id}_no_stop_codon.fa -nogap -codontable 11 -output paml > cds.pal2nal
+done
+#find the wrong og 
+for dir in  ~/data/selection_analysis/PSGanalysis/single_copy/*; do
+    if [ -d "$dir" ]; then
+        if [ -e "$dir/cds.pal2nal" ]; then
+            if [ ! -s "$dir/cds.pal2nal" ]; then
+                echo "$dir"
+            fi
+        fi
+    fi
+done | cut -d "/" -f 9 | sort | less
