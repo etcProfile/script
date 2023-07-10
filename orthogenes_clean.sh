@@ -13,8 +13,7 @@ sed '/^>/s/^>\([^ ]*\) .*/>\1 /' Tpra.cds.fa
 sed '/^>/s/\.[^\.]*\.[^\.]*$//' Pvul_protein.fa
 #get all nucl sequence
 cat Aedg.cds.fa Aeve.cds.fa Ljap.cds.fa Pvul.cds.fa Smar_cds.fa Tpra.cds.fa >> all_cds.fa
- ls | while read id; do cd ~/data/selection_analysis/PSGanalysis/single_copy/${id}; sed 's/.\([0-9]\
-)\.p//g' -i ${id}.list; seqkit grep -f ${id}.list > ${id}_cds.fa; done
+ ls | while read id; do cd ~/data/selection_analysis/PSGanalysis/single_copy/${id}; sed 's/.\([0-9]\)\.p//g' -i ${id}.list; seqkit grep -f ${id}.list > ${id}_cds.fa; done
 #change seqeuence header, same as the species name
 sed '/^>/s/Aedg.*/Adg/; /^>/s/Ae.*/Aeve/; /^>/s/Lj.*/Ljap/; /^>/s/Tp.*/Tpra/; /^>/s/EVM.*/Smar/; /^>/s/Pv5.*/Pvul/; /^>/s/Adg.*/Aedg/' ${id}_cds.fa > ${id}_cds_clean.fa
 #
