@@ -1,5 +1,4 @@
 read.table("hours_cluster3.txt",header = T,sep = "\t") -> hours_cluster3
 melt(hours_cluster3) -> hours_cluster3_melt
-gd <- hours_cluster3_melt %>% group_by(variable) %>% summarise(value=mean(value))
 ggplot(data=hours_cluster3_melt,aes(x=variable,y=value))+geom_line(aes(group=id),alpha=0.2)+stat_summary(fun.y = mean,geom="line",aes(group=1),size=1.9,linetype="dashed")+theme_bw()+theme(axis.text.x=element_text(size=10),axis.text.y=element_text(size=10),panel.grid=element_blank())+ylab("Volatile intensity (Z)")+xlab(" ")
 topptx(filename = "hours_cluster3.pptx",width = 7,height=5)
