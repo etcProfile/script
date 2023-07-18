@@ -1,0 +1,3 @@
+ggplot(data=d5day,aes(x=Start.of.data.points,y=value))+geom_line()+theme_bw()+theme(panel.grid = element_blank())+scale_x_continuous(name="Abundance
++ ",breaks = seq(0,55,5),expand = c(0,0),limits = c(0,55))+scale_y_continuous(name="Retention time",expand=c(0,0),breaks = seq(0,2.8e6,500000),limits = c(0,3e6))
+> topptx(filename = "D5day.pptx",width = 11,height=4)
