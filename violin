@@ -13,3 +13,30 @@ data_mean <- data %>% group_by(group1, group2) %>% summarise(mean_e = mean(e), s
 area_mean$group2 <- factor(area_mean$group2,levels = c("1.5cm","4cm","6cm","9.5cm","12cm","mature"))
 
 ggplot(area_mean,aes(x=group1,y=mean_e,fill=group2))+geom_bar(stat="identity",position = 'dodge',width = 0.75)+scale_fill_brewer(name="Spur length",palette = "Greys")+geom_errorbar(aes(ymin = mean_e - sd_e, ymax = mean_e + sd_e), position = position_dodge(0.75),width=0.3)+theme_bw()+xlab("Spur of Area")+ylab("Cell Area")
+
+read.table("area.txt",header = T,sep = "\t") -> height
+area_mean <- area %>% group_by(group1, group2) %>% summarise(mean_area = mean(area), sd_area = sd(area))
+area_mean$group2 <- factor(area_mean$group2,levels = c("1.5cm","4cm","6cm","9cm","12cm","mature"))
+area_mean$group1 <- factor(area_mean$group1,levels = c("Base","BMM","Middle","TMM","Tip"))
+ggplot(area_mean,aes(x=group1,y=mean_area,fill=group2))+geom_bar(stat="identity",position = 'dodge',width = 0.75)+scale_fill_brewer(name="Spur length",palette = "Greys")+geom_errorbar(aes(ymin = mean_area - sd_area, ymax = mean_area + sd_area), position = position_dodge(0.75),width=0.3,alpha=0.6)+theme_bw()+theme(axis.text.x=element_text(size=10),axis.text.y=element_text(size=10),panel.grid=element_blank())+ylab("Cell Area")+xlab("Spur of Area")
+topptx(filename = "Spur_Area.pptx",width = 11,height = 6)
+read.table("height.txt",header = T,sep = "\t") -> height
+height_mean <- height %>% group_by(group1, group2) %>% summarise(mean_height = mean(height), sd_height = sd(height))
+height_mean$group2 <- factor(height_mean$group2,levels = c("1.5cm","4cm","6cm","9cm","12cm","mature"))
+height_mean$group1 <- factor(height_mean$group1,levels = c("Base","BMM","Middle","TMM","Tip"))
+ggplot(height_mean,aes(x=group1,y=mean_height,fill=group2))+geom_bar(stat="identity",position = 'dodge',width = 0.75)+scale_fill_brewer(name="Spur length",palette = "Greys")+geom_errorbar(aes(ymin = mean_height - sd_height, ymax = mean_height + sd_height), position = position_dodge(0.75),width=0.3,alpha=0.6)+theme_bw()+theme(axis.text.x=element_text(size=10),axis.text.y=element_text(size=10),panel.grid=element_blank())+ylab("Cell Height")+xlab("Spur of Area")
+topptx(filename = "Spur_Height.pptx",width = 11,height = 6)
+read.table("width.txt",header = T,sep = "\t") -> width
+width_mean <- width %>% group_by(group1, group2) %>% summarise(mean_width = mean(width), sd_width = sd(width))
+width_mean$group2 <- factor(width_mean$group2,levels = c("1.5cm","4cm","6cm","9cm","12cm","mature"))
+width_mean$group1 <- factor(width_mean$group1,levels = c("Base","BMM","Middle","TMM","Tip"))
+ggplot(width_mean,aes(x=group1,y=mean_width,fill=group2))+geom_bar(stat="identity",position = 'dodge',width = 0.75)+scale_fill_brewer(name="Spur length",palette = "Greys")+geom_errorbar(aes(ymin = mean_width - sd_width, ymax = mean_width + sd_width), position = position_dodge(0.75),width=0.3,alpha=0.6)+theme_bw()+theme(axis.text.x=element_text(size=10),axis.text.y=element_text(size=10),panel.grid=element_blank())+ylab("Cell Width")+xlab("Spur of Area")
+topptx(filename = "Spur_Width.pptx",width = 11,height = 6)
+read.table("e.txt",header = T,sep = "\t") -> e
+e_mean <- e %>% group_by(group1, group2) %>% summarise(mean_e = mean(e), sd_e = sd(e))
+e_mean$group2 <- factor(e_mean$group2,levels = c("1.5cm","4cm","6cm","9cm","12cm","mature"))
+e_mean$group1 <- factor(e_mean$group1,levels = c("Base","BMM","Middle","TMM","Tip"))
+ggplot(e_mean,aes(x=group1,y=mean_e,fill=group2))+geom_bar(stat="identity",position = 'dodge',width = 0.75)+scale_fill_brewer(name="Spur length",palette = "Greys")+geom_errorbar(aes(ymin = mean_e - sd_e, ymax = mean_e + sd_e), position = position_dodge(0.75),width=0.3,alpha=0.6)+theme_bw()+theme(axis.text.x=element_text(size=10),axis.text.y=element_text(size=10),panel.grid=element_blank())+ylab("Cell Anisotropy")+xlab("Spur of Area")
+topptx(filename = "Spur_E.pptx",width = 11,height = 6)
+
+
