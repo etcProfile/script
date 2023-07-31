@@ -1,0 +1,8 @@
+df <- data.frame(Length = c(1.5, 4, 6, 9, 12, 17),
+                 r1 = c(564, 730, 869, 877, 826, 807),
+                 r2 = c(629, 785, 823, 867, 856, 869),
+                 r3 = c(544, 813, 865, 849, 872, 863))
+df$Length_num <- as.numeric(df$Length)
+df$mean <- rowMeans(df[,2:4])
+df$sd <- apply(df[,2:4], 1, sd)
+ggplot(df_long, aes(x = Length_num, y = mean)) + geom_line(aes(group = 1)) + geom_point() +geom_errorbar(aes(ymin = mean - sd, ymax = mean + sd), width = 0.1) + geom_smooth(aes(x=Length_num,y=value),method = "auto",se=FALSE)+theme_bw()+theme(axis.text.x=element_text(size=10),axis.text.y=element_text(size=10),panel.grid=element_blank())
