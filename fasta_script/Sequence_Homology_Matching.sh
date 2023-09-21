@@ -25,10 +25,10 @@ mmseqs createdb $database_file ./mmseqsdb/database
 diamond makedb --in $database_file -d ./dianmonddb/database
 # hmm判断，有则match,无则build一个，然后match
 if [ -n "$hmmsed" ]; then
-    hmmsearch --tblout hmm.out --noali --notextw $hmmsed $query_file | awk '{print $1}' > hmm.out
+    hmmsearch --tblout hmm.out --noali --notextw $hmmsed $query_file 
 else
     hmmbuild database.hmm $database_file
-    hmmsearch --tblout hmm.out --noali --notextw database.hmm $query_file | awk '{print $1}' > hmm.out
+    hmmsearch --tblout hmm.out --noali --notextw database.hmm $query_file 
 fi
 date | xargs echo "Complete database creation～！ | " 
 date | xargs echo "Homologous sequences are being matched... ｜"
