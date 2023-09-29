@@ -1,0 +1,73 @@
+data <- c(rnorm(5,mean=5), rnorm(5,mean=20), rnorm(5, mean=100), c(600,700,800,900,10000)) 
+data <- matrix(data, ncol=5, byrow=T) 
+data <- as.data.frame(data)
+ rownames(data) <- letters[1:4] 
+ colnames(data) <- paste("Grp", 1:5, sep="_") 
+ data Grp_1 Grp_2 Grp_3 Grp_4 Grp_5 
+ a 6.61047 20.946720 100.133106 600.000000 5.267921 
+ b 20.80792 99.865962 700.000000 3.737228 19.289715 
+ c 100.06930 800.000000 6.252753 21.464081 98.607518 
+ d 900.00000 3.362886 20.334078 101.117728 10000.000000 
+ # 对数转换 # +1是为了防止对0取对数；是加1还是加个更小的值取决于数据的分布。 # 加的值一般认为是检测的低阈值，低于这个值的数字之间的差异可以忽略。 
+ data_log <- log2(data+1) 
+ data_log Grp_1 Grp_2 Grp_3 Grp_4 Grp_5 
+ a 2.927986 4.455933 6.660112 9.231221 2.647987 
+ b 4.446780 6.656296 9.453271 2.244043 4.342677 
+ c 6.659201 9.645658 2.858529 4.489548 6.638183 
+ d 9.815383 2.125283 4.415088 6.674090 13.287857 
+ data_log$ID = rownames(data_log) 
+ data_log_m = melt(data_log, id.vars=c("ID")) 
+ p <- ggplot(data_log_m, aes(x=variable,y=ID)) + xlab("samples") + ylab(NULL) + theme_bw() + theme(panel.grid.major = element_blank()) + theme(legend.key=element_blank()) + theme(axis.text.x=element_text(angle=45,hjust=1, vjust=1)) + theme(legend.position="top") + geom_tile(aes(fill=value)) + scale_fill_gradient(low = "white", high = "red") 
+ ggsave(p, filename="heatmap_log.pdf", width=8, height=12, units=c("cm"),colormodel="srgb")
+data_ori <- "Grp_1;Grp_2;Grp_3;Grp_4;Grp_5 a;6.6;20.9;100.1;600.0;5.2 b;20.8;99.8;700.0;3.7;19.2 c;100.0;800.0;6.2;21.4;98.6 d;900;3.3;20.3;101.1;10000" 
+data <- read.table(text=data_ori, header=T, row.names=1, sep=";", quote="")
+ # 去掉方差为0的行，也就是值全都一致的行 
+ data <- data[apply(data,1,var)!=0,] 
+ data Grp_1 Grp_2 Grp_3 Grp_4 Grp_5 
+ a 6.6 20.9 100.1 600.0 5.2 
+ b 20.8 99.8 700.0 3.7 19.2 
+ c 100.0 800.0 6.2 21.4 98.6 
+ d 900.0 3.3 20.3 101.1 10000.0 
+ # 标准化数据，获得Z-score，并转换为data.frame 
+ data_scale <- as.data.frame(t(apply(data,1,scale))) # 重命名列 
+ colnames(data_scale) <- colnames(data) 
+ data_scale 
+ Grp_1 Grp_2 Grp_3 Grp_4 Grp_5 
+ a -0.5456953 -0.4899405 -0.1811446 1.7679341 -0.5511538 
+ b -0.4940465 -0.2301542 1.7747592 -0.5511674 -0.4993911 
+ c -0.3139042 1.7740182 -0.5936858 -0.5483481 -0.3180801 
+ d -0.2983707 -0.5033986 -0.4995116 -0.4810369 1.7823177 
+ data_scale$ID = rownames(data_scale) 
+ data_scale_m = melt(data_scale, id.vars=c("ID")) 
+ p <- ggplot(data_scale_m, aes(x=variable,y=ID)) + xlab("samples") + ylab(NULL) + theme_bw() + theme(panel.grid.major = element_blank()) + theme(legend.key=element_blank()) + theme(axis.text.x=element_text(angle=45,hjust=1, vjust=1)) + geom_tile(aes(fill=value)) + scale_fill_gradient(low = "white", high = "red") 
+ ggsave(p, filename="heatmap_scale.pdf", width=8, height=12, units=c("cm"),colormodel="srgb")
+
+ # 先写成函数的形式，方便调用
+removeRowsAllNa  <- function(x){x[apply(x, 1, function(y) any(!is.na(y))),]}
+removeColsAllNa  <- function(x){x[, apply(x, 2, function(y) any(!is.na(y)))]}
+
+# 非函数形式则更简短，其中 x 为 DataFrame 或 Matrix 
+x_RowsAllNa_removed =  x[apply(x, 1, function(y) any(!is.na(y))),]
+x_ColsAllNa_removed =  x[, apply(x, 2, function(y) any(!is.na(y)))]
+
+
+
+plt <- ggbetweenstats(data=data,x=Label,y=E)+
+  labs(x="Different floral organs",y="Cell Area",title = "Distribution of cell area of different floral organs")+
+  theme(text=element_text(family = "Arial",size=10,color="black"),
+# This is the new default font in the plot
+plot.title = element_text(family="Arial",size=8,color = "black"),
+       plot.subtitle = element_text(family = "Arial",size = 6,color = "black"),
+       plot.title.position = "plot",
+       axis.text = element_text(size=10,color="black"),
+       axis.title = element_text(size=8))+
+theme(axis.ticks = element_blank(),
+       axis.line = element_line(colour = "black"),
+       panel.grid = element_line(color = "black"),
+       panel.grid.minor = element_blank(),
+       panel.grid.major.x = element_blank(),
+       panel.grid.major.y = element_line(linetype = "dashed"),
+       panel.background = element_rect(fill = "white", color = "white"),
+       plot.background = element_rect(fill = "white", color = "white")
+)
+plt 
