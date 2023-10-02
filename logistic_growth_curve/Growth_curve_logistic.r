@@ -11,7 +11,7 @@ melt(Length,id='day') -> melt_data
 write.table(melt_data,file="melt.txt",sep="\t")
 # here also could use a function named "getInitial" from the package "stats"  to get logistic nonlinear initial parameter
 #logF <- logisticFuns()
-#logSS <- getInitial(value ~ SSlogis(day, alpha, xmid, scale), data = melt)
+logSS <- getInitial(value ~ SSlogis(day, alpha, xmid, scale), data = melt)
 #differenct between the logistic and get Initial.
 K_start <- logSS["alpha"]
 R_start <- 1/logSS["scale"]
