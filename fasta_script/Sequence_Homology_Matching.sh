@@ -71,4 +71,4 @@ AXTConvertor ${dir}_cds_pal2nal.aln ${dir}_input.axt
 KaKs_Calculator -i ${dir}_input.axt -o ${dir}.result -c 11 -m YN 
 # Extract the relevant information from the output file and save it to ${dir}.result.list
 cat ${dir}.result | cut -f 1,2,3,4,5,6 | grep -v 'Sequence' | less -S  > ${dir}.result.list
-done
+
