@@ -1,0 +1,17 @@
+df <- data.frame(Length = c(1.5, 4, 6, 9, 12, 17),
+                 r1 = c(564, 724, 869, 877, 826, 807),
+                 r2 = c(629, 785, 823, 867, 856, 869),
+                 r3 = c(544, 803, 865, 849, 872, 863))
+df$Length <- factor(df$Length)
+melt(df) -> df_long
+df$Length_num <- as.numeric(df$Length)
+df$mean <- rowMeans(df[,2:4])
+df$sd <- apply(df[,2:4], 1, sd)
+ebtop<-function(x){
+     return(mean(x)+sd(x)/sqrt(length(x)))
+  }
+ ebbottom<-function(x){
+    return(mean(x)-sd(x)/sqrt(length(x)))
+ }
+ ggplot(data=df_long,aes(x=Length,y=value))+stat_summary(geom="bar",fun=mean,fill="#c6c3c3",width=0.5)+stat_summary(geom="errorbar",fun.min=ebbottom,fun.max=ebtop,width=0.2)+  geom_jitter(width = 0.3)+geom_signif(comparisons = list(c("1.5","4"),c("1.5","6"),c("4","6")),test = t.test,test.args = list(var.equal=T,alternative="two.side"),y_position = c(800,870,940))+theme_bw()
+ 
